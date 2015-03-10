@@ -68,7 +68,8 @@ int rot(char *filename, int rotation){
 	// Rotate this shit
 	char op;
 	while (fscanf(fp, "%c", &op) != EOF){
-		fprintf(ofp, "%c", op+=rotation);
+		char r = (char)rotation;
+		fprintf(ofp, "%c", op+=r);
 	}
 
 	// Close the file pointers
@@ -95,13 +96,12 @@ int main(int argc, char *argv[]){
 				fn = optarg;
 				break;
 			case 'r':
-				
 				buff = optarg;
 				int len = strlen(buff);
 				int sign = 1;
 				
 				// if negative
-				if (buff[0]='-'){
+				if (buff[0]=='-'){
 					int i;
 					sign = -1;
 					for (i=1; i<len; i++){
@@ -115,6 +115,7 @@ int main(int argc, char *argv[]){
 					rotation = atoi(buff)*sign;
 				} else{
 					printf("-r flag takes a digit. Unrecognized digit.\n");
+					printf("buff is: %s", buff);
 					exit(1);
 				}
 				break;
@@ -130,7 +131,7 @@ int main(int argc, char *argv[]){
 		printf("No file specified. Exiting...\n");
 		exit(1);
 	}	
-	
+	printf("filename: %s\trotation: %d\n", fn, rotation);	
 	int status;
 	status = rot(fn,rotation);	
 	if (status == -1){
